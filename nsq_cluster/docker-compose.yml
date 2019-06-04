@@ -3,11 +3,23 @@ version: '2'
 # Use this docker-compose file to setup the test environment before running the
 # tests.
 services:
-  consul:
-    image: consul:latest
-    command: agent -server -dev -log-level debug -client 0.0.0.0
+  # consul:
+  #   image: consul:latest
+  #   command: agent -server -dev -log-level debug -client 0.0.0.0
+  #   ports:
+  #     - 8500:8500
+
+
+  nsqadmin:
+    image: nsqio/nsq
+    command: /nsqadmin --lookupd-http-address=nsqlookupd-3:4161
+    depends_on:
+      - nsqlookupd-1
+      - nsqlookupd-2
+      - nsqlookupd-3
+    hostname: nsqadmin
     ports:
-      - 8500:8500
+      - "4171:4171"
 
   nsqlookupd-1:
     image: nsqio/nsq:v0.3.8
