@@ -58,7 +58,16 @@ docker run -it --rm --link clickhouse-server:clickhouse-server yandex/clickhouse
 ```
 
 默认用户名为：
-user
+default
+
+
+权限：
+
+在users.conf中，放开注释：
+
+```bash
+access_management 
+```
 
 
 
