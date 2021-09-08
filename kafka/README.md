@@ -5,3 +5,7 @@
 
 - [Kafka UI](https://github.com/provectus/kafka-ui)
 
+
+## Kafka UI
+
+![kafka-ui](./kafka_ui.png)
