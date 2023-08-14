@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  bytebase:
+    container_name: bytebase
+    image: bytebase/bytebase:2.4.0
+    platform: linux/amd64
+    restart: unless-stopped
+    command:
+      - --data=/var/opt/bytebase
+      - --port=8080
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:5678/healthz", "||", "exit", "1"]
+      interval: 5m
+      timeout: 60s
+    volumes:
+      - ./container-data:/var/opt/bytebase
+    ports:
+      - 18085:8080
