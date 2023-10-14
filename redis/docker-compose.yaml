@@ -1,9 +1,19 @@
-redis:
-  container_name: redis
-  image: redis
-  ports:
-    - "6379:6379"
-  volumes:
-    - ../data/redis:/data
-  entrypoint: redis-server --appendonly yes
-  restart: always
+version: '3.8'
+
+services:
+
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./container-data:/data
+      - ./container-config:/config
+      - /etc/localtime:/etc/localtime:ro
+
+    environment:
+      - REDIS_PASS=$REDIS_PASS
+
+    entrypoint: redis-server --appendonly yes --loglevel warning --requirepass ${REDIS_PASS}
