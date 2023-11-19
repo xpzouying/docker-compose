@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  app:
+    image: "jc21/nginx-proxy-manager:latest"
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "18081:81"
+      - "443:443"
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    networks:
+      - headscale-network
+
+  static-server:
+    image: nginx:latest
+    volumes:
+      - ./static-html:/usr/share/nginx/html
+    networks:
+      - headscale-network
+
+networks:
+  headscale-network:
+    external: true
