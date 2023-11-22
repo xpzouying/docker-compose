@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  uptime-kuma:
+    container_name: uptime-kuma
+    image: louislam/uptime-kuma:1
+    restart: unless-stopped
+    volumes:
+      - ./container-config:/app/data
+    networks:
+      zouying-network:
+
+networks:
+  zouying-network:
+    external: true
