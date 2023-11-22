@@ -1,16 +1,15 @@
-version: '3'
+version: "3"
 
 services:
-  headscale:
+  uptime-kuma:
     container_name: uptime-kuma
     image: louislam/uptime-kuma:1
     restart: unless-stopped
     volumes:
       - ./container-config:/app/data
     networks:
-      headscale-network:
-
+      zouying-network:
 
 networks:
-  headscale-network:
+  zouying-network:
     external: true
