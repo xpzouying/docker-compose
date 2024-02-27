@@ -8,9 +8,3 @@ scrape_configs:
     static_configs:
       - targets:
           - 'prometheus:9090'
-
-  - job_name: 'zydev_metrics'
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['192.168.50.140:10240']  # 更换ip地址
-
