@@ -4,10 +4,15 @@ services:
     image: prom/prometheus
     volumes:
       - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+      - ./data:/prometheus
     networks:
       - localprom
     ports:
       - 9090:9090
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"  # 设置存储路径
+      - "--storage.tsdb.retention.time=30d"  # 可选，设置数据保留期限，例如保留30天
   node-exporter:
     image: prom/node-exporter
     networks:
