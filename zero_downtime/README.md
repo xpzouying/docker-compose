@@ -4,6 +4,12 @@
 
 - [Simple, zero-downtime deploys with nginx and docker-compose](https://www.tines.com/blog/simple-zero-downtime-deploys-with-nginx-and-docker-compose)
 
+## 2. ab-testing
+
+```bash
+ab -s600 -t120 -n10000000 -c1 http://localhost/
+```
+
 
 ## 2. Shell Scripts
 

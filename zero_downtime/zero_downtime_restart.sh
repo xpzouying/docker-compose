@@ -1,7 +1,11 @@
 #!/bin/bash
 
 reload_nginx() {
-	docker exec nginx /usr/sbin/nginx -s reload
+	# 1. use docker cli
+	# docker exec nginx /usr/sbin/nginx -s reload
+
+	# 2. use docker-compose cli
+	docker-compose exec nginx nginx -s reload
 }
 
 zero_downtime_deploy() {
@@ -15,17 +19,25 @@ zero_downtime_deploy() {
 	# wait for new container to be available
 	new_container_id=$(docker ps -f name=$service_name -q | head -n1)
 	new_container_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $new_container_id)
-	curl --silent --include --retry-connrefused --retry 30 --retry-delay 1 --fail http://$new_container_ip:3000/ || exit 1
+
+	echo "New container ID: $new_container_id"
+	echo "Old container ID: $old_container_id"
+	echo "Checking health on IP: $new_container_ip"
+
+	curl --silent --include --retry-connrefused --retry 30 --retry-delay 1 --fail http://$new_container_ip:8000/ || exit 1
 
 	# start routing requests to the new container (as well as the old)
 	reload_nginx
 
 	# take the old container offline
-	docker stop $old_container_id
-	docker rm $old_container_id
+	docker stop $old_container_id || echo "Failed to stop container $old_container_id"
+	docker rm $old_container_id || echo "Failed to remove container $old_container_id"
 
 	docker-compose up -d --no-deps --scale $service_name=1 --no-recreate $service_name
 
 	# stop routing requests to the old container
 	reload_nginx
 }
+
+# Call the zero_downtime_deploy function to execute the deployment
+zero_downtime_deploy
